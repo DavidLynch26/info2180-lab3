@@ -5,13 +5,14 @@ function loadBoard(){
     for(count = 0; count <= childCount-1; count++){
         parent.children[count].classList.add("square");
         parent.children[count].addEventListener('click', clickHandler);
+        parent.children[count].addEventListener('mouseover', hoverHandler);
+        parent.children[count].addEventListener('mouseout', hoverHandler);
         moves.push("empty");
     }
     return parent;
 }
 
 function isEmpty(position){
-    console.log(moves[position]);
     if(moves[position] == "empty"){
         return true;
         
@@ -21,7 +22,7 @@ function isEmpty(position){
 }
 
 function clickHandler(event){
-    index = Array.from(loadBoard().children).indexOf(event.target)
+    index = Array.from(loadBoard().children).indexOf(event.target);
     if(isEmpty(index) == true){
         nextMove(index);
     }
@@ -38,6 +39,16 @@ function nextMove(position){
         loadBoard().children[position].innerHTML = "O";
         moves[position] = "O";
         currentMove = 2;
+    }
+}
+
+function hoverHandler(event){
+    index = Array.from(loadBoard().children).indexOf(event.target);
+    
+    if(event.type == "mouseover"){
+        loadBoard().children[index].classList.add("hover");
+    }else if(event.type == "mouseout"){
+        loadBoard().children[index].classList.remove("hover");
     }
 }
 
