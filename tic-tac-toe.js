@@ -2,6 +2,9 @@ function loadBoard(){
     let parent = document.getElementById("board");
     let childAmount = parent.childElementCount;
 
+    let buttons = document.getElementsByClassName("controls");
+    let newGame = buttons[0].addEventListener('click', newGameHandler);
+
     for(childCount = 0; childCount <= childAmount-1; childCount++){
         parent.children[childCount].classList.add("square");
         parent.children[childCount].addEventListener('click', clickHandler);
@@ -73,6 +76,14 @@ function winChecker(){
             document.getElementById("status").classList.add("you-won");
             document.getElementById("status").innerHTML = "Congratulations! X is the Winner!";
             win = true;
+        }
+    }
+}
+
+function newGameHandler(event){
+    if(moveAmount != 0){
+        if(event){
+            location.reload();
         }
     }
 }
