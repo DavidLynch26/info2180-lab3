@@ -20,12 +20,14 @@ function isEmpty(position){
 }
 
 function clickHandler(event){
-    index = Array.from(loadBoard().children).indexOf(event.target);
-    if(isEmpty(index)){
-        nextMove(index);
-        moveAmount++;
-        if(moveAmount >= 5){
-            winChecker();
+    if(!win){
+        index = Array.from(loadBoard().children).indexOf(event.target);
+        if(isEmpty(index)){
+            nextMove(index);
+            moveAmount++;
+            if(moveAmount >= 5){
+                winChecker();
+            }
         }
     }
 }
@@ -42,7 +44,6 @@ function nextMove(position){
         playerMoves[0] = playerMoves[0].substring(0, position) + "1" + playerMoves[0].substring(position + 1);
         currentMove = 2;
     }
-    console.log(playerMoves);
 }
 
 function isHover(event){
@@ -67,9 +68,11 @@ function winChecker(){
         if(playerMoves[0] == winCombos[comboCount]){
             document.getElementById("status").classList.add("you-won");
             document.getElementById("status").innerHTML = "Congratulations! O is the Winner!";
+            win = true;
         }else if(playerMoves[1] == winCombos[comboCount]){
             document.getElementById("status").classList.add("you-won");
             document.getElementById("status").innerHTML = "Congratulations! X is the Winner!";
+            win = true;
         }
     }
 }
@@ -89,9 +92,6 @@ const winCombos = [
     "001010100"
     ]
 
-window.onload = loadBoard;
+var win = false;
 
-// let variables = loadBoard();
-// let parent = vars[0];
-// var moves = vars[1];
-// var currentMove = vars[2];
+window.onload = loadBoard;
