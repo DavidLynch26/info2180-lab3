@@ -1,21 +1,19 @@
 function loadBoard(){
     let parent = document.getElementById("board");
-    let childCount = parent.childElementCount;
+    let childAmount = parent.childElementCount;
 
-    for(count = 0; count <= childCount-1; count++){
-        parent.children[count].classList.add("square");
-        parent.children[count].addEventListener('click', clickHandler);
-        parent.children[count].addEventListener('mouseover', hoverHandler);
-        parent.children[count].addEventListener('mouseout', hoverHandler);
-        moves.push("empty");
+    for(childCount = 0; childCount <= childAmount-1; childCount++){
+        parent.children[childCount].classList.add("square");
+        parent.children[childCount].addEventListener('click', clickHandler);
+        parent.children[childCount].addEventListener('mouseover', hoverHandler);
+        parent.children[childCount].addEventListener('mouseout', hoverHandler);
     }
     return parent;
 }
 
 function isEmpty(position){
-    if(moves[position] == "empty"){
+    if(playerMoves[0][position] == "0" && playerMoves[1][position] == "0"){
         return true;
-        
     }else{
         return false;
     }
@@ -23,8 +21,12 @@ function isEmpty(position){
 
 function clickHandler(event){
     index = Array.from(loadBoard().children).indexOf(event.target);
-    if(isEmpty(index) == true){
+    if(isEmpty(index)){
         nextMove(index);
+        moveAmount++;
+        if(moveAmount >= 5){
+            winChecker();
+        }
     }
 }
 
@@ -32,28 +34,60 @@ function nextMove(position){
     if(currentMove == 2){
         loadBoard().children[position].classList.add("X");
         loadBoard().children[position].innerHTML = "X";
-        moves[position] = "X";
+        playerMoves[1] = playerMoves[1].substring(0, position) + "1" + playerMoves[1].substring(position + 1);
         currentMove = 1;
     }else{
         loadBoard().children[position].classList.add("O");
         loadBoard().children[position].innerHTML = "O";
-        moves[position] = "O";
+        playerMoves[0] = playerMoves[0].substring(0, position) + "1" + playerMoves[0].substring(position + 1);
         currentMove = 2;
+    }
+    console.log(playerMoves);
+}
+
+function isHover(event){
+    if(event.type == "mouseover"){
+        return true
+    }else if(event.type == "mouseout"){
+        return false
     }
 }
 
 function hoverHandler(event){
     index = Array.from(loadBoard().children).indexOf(event.target);
-    
-    if(event.type == "mouseover"){
+    if(isHover(event)){
         loadBoard().children[index].classList.add("hover");
-    }else if(event.type == "mouseout"){
+    }else{
         loadBoard().children[index].classList.remove("hover");
     }
 }
 
+function winChecker(){
+    for(comboCount = 0; comboCount <= winCombos.length-1; comboCount++){
+        if(playerMoves[0] == winCombos[comboCount]){
+            document.getElementById("status").classList.add("you-won");
+            document.getElementById("status").innerHTML = "Congratulations! O is the Winner!";
+        }else if(playerMoves[1] == winCombos[comboCount]){
+            document.getElementById("status").classList.add("you-won");
+            document.getElementById("status").innerHTML = "Congratulations! X is the Winner!";
+        }
+    }
+}
+
 var currentMove = Math.floor(Math.random() * (2 - 1 + 1)) + 1;
-var moves = [];
+var playerMoves = ["000000000", "000000000"];
+var moveAmount = 0;
+
+const winCombos = [
+    "111000000",
+    "000111000",
+    "000000111",
+    "100100100",
+    "010010010",
+    "001001001",
+    "100010001",
+    "001010100"
+    ]
 
 window.onload = loadBoard;
 
