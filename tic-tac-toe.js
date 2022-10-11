@@ -8,17 +8,18 @@ function isEmpty(position){
 
 function clickHandler(event){
     if(!win){
+        var winMessage = document.getElementById("status");
         index = Array.from(parent.children).indexOf(event.target);
         if(isEmpty(index)){
             nextMove(index);
             moveAmount++;
             if(moveAmount >= 5){
                 if(winChecker()[1] == 1 && winChecker()[1]){
-                    document.getElementById("status").classList.add("you-won");
-                    document.getElementById("status").innerHTML = "Congratulations! X is the Winner!";
+                    winMessage.classList.add("you-won");
+                    winMessage.innerHTML = "Congratulations! X is the Winner!";
                 }else if(winChecker()[1] == 0 && winChecker()[0]){
-                    document.getElementById("status").classList.add("you-won");
-                    document.getElementById("status").innerHTML = "Congratulations! O is the Winner!";
+                    winMessage.classList.add("you-won");
+                    winMessage.innerHTML = "Congratulations! O is the Winner!";
                 }
             }
         }
