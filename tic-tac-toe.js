@@ -83,7 +83,19 @@ function winChecker(){
 function newGameHandler(event){
     if(moveAmount != 0){
         if(event){
-            location.reload();
+            playerMoves = ["000000000", "000000000"];
+            moveAmount = 0;
+            win = false;
+            document.getElementById("status").classList.remove("you-won");
+            document.getElementById("status").innerHTML = "Move your mouse over a square and click to play an X or an O.";
+
+            for(let count = 0; count <= loadBoard().children.length-1; count++){
+                console.log(count)
+                loadBoard().children[count].classList.remove("O");
+                loadBoard().children[count].innerHTML = "";
+                loadBoard().children[count].classList.remove("X");
+            }
+            // location.reload();
         }
     }
 }
